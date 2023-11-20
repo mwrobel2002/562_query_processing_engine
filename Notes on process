@@ -1,0 +1,39 @@
+*In this assignment, there is no SQL needed
+
+*Phi Operator
+    - One file will contain the input to the Phi operator
+    - inputs
+        - S: the projections; all the attributes in the select clause of the corresponding SQL statement
+        - n: the number of grouping variables; anything after the ':' or ';' in the group by clause depending if the query is MF or an EMF query
+            - could potentially by 0 if the query is a simple SQL query
+        - V: the grouping attributes; anything before the ':' or '; in the group by clause
+            - could be Null
+        - F-VECT: a vector containing all the aggregate functions
+            - could be Null
+        - Pred_List: list of predicates for the grouping variable; anything in the such that clause
+            - could be Null
+        - Having: any predicates performed in the having clause
+            - could be Null
+
+*Goal: We are going to express the ESQL query (MF or EMF) in the form of the args in the Phi operator
+    - Code will read these 6 arguements and then create a program that will compile and produce the final output
+    - Our code will have to take the arguments and map it to another file that will produce the output
+        - file that produces output: This file will have 2 parts
+            - 1. The Data Structure (output of the query/group by attributes & aggs) known as MF_Struct
+                - In the paper this struct is known as H
+                - We need to create it, populate it and then output it
+            - 2. # of table scan loops to compute aggregates
+                - First scan: Capture all distinct values of group by attriutes
+                    - ex: group by cust - grab all the distinct customers
+                - Second Scan: Compute aggregates for each grouping var
+                - Third Scan: loop through the mf_struct to produce output
+
+*Pseudo Code:
+    * Part 1 the data structure: 
+        - grouping attributes (V) followed by the aggregates (F_VECT)
+        - create a table with a max of 500 rows be default
+        - We are capturing the data in this struct
+    *Part 2 doing scans:
+        - Scan 1: Here we are getting all the distinct values from  the group by attribute
+            - checks if the value for that attribute is in the mf_struct table returning -1 if it isnt meaning to add it into the mf_struct table
+        - Future Scans: Go Through each grouping variable and scan for the data to add in the mf_struct table
