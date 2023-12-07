@@ -22,10 +22,10 @@ def query():
     _global = []
     
     for row in cur:
-        if row['quant'] > 10:
+        if row['quant'] > 999:
             _global.append(row)
     
-    
+    print('GLOBAL', _global)
     return tabulate.tabulate(_global,
                         headers="keys", tablefmt="psql")
 

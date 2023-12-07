@@ -1,0 +1,6 @@
+cust,prod,min_1_date,sum_1_quant,count_2_quant
+3
+cust,prod
+min_1_date,sum_1_quant,count_2_quant
+1.state='NY';2.state='NJ';3.state='CT'
+min_1_date>2018-01-01;sum_1_quant>=2000

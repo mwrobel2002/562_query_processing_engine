@@ -2,17 +2,12 @@
 
 TODO LIST:
 
-1. Ask professor about uncommon aggregates such VARIANCE, MEDIAN. Do we need to handle them?
-2. Ask how an EMF query would impact phi operator
+Ask for some example queries + a way to tell if they are correct in our program
 
-hashmap h
+If our program functions perfectly without anything special like emf, dependent queries, etc. is it still an A?
 
-for row in cursor.rows
-    if h.contains(row.groupby_vars):
+is sum_0_quant included in minimum reqs. for ex. also getting sum of whole table in addition to for specific grouping vars
+    ^ For this, how can we represent it in the query args?
 
-    else:
-        h.insert(groupby_vars, row(F_VECT[1]), row(F_VECT[2])) 
 
-        
-3. How to show in the phi operator "and" VS "or" in the predicate list of comparisons from SQL 
 """
