@@ -1,6 +1,13 @@
-cust,prod,count_1_quant,sum_2_quant,max_3_quant,avg_2_quant,min_1_date
-3
-cust,prod
-count_1_quant,sum_2_quant,max_3_quant,avg_2_quant,min_1_date
-1.state='NY';2.state='NJ';3.state='CT'
+cust,prod,quant
 NONE
+NONE
+NONE
+NONE
+NONE
+
+
+'''
+
+This is a simple select of a few attributes on the entire table, without any group by attributes.
+
+'''

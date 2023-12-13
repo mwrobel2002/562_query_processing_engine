@@ -1,0 +1,14 @@
+month,max_1_quant,avg_1_quant,max_2_quant,avg_2_quant,max_3_quant,avg_3_quant
+3
+month
+max_1_quant,avg_1_quant,max_2_quant,avg_2_quant,max_3_quant,avg_3_quant
+1.prod='Ice';2.prod='Cherry';3.prod='Butter'
+NONE
+
+
+'''
+
+This is a query to attain the maximum and average number of products sold of Ice, Cherries, and 
+Butter for each month of the year.
+
+'''
