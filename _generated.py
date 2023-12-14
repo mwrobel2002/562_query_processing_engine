@@ -1,4 +1,5 @@
 
+
 import os
 import psycopg2
 import psycopg2.extras
@@ -24,7 +25,11 @@ def query():
     
     _global = []
     
-    f = open("q2.txt", "r")
+    try:
+        f = open("q5.txt", "r")
+    except:
+        raise Exception("File not found")
+
     phi_arr = f.readlines()
     S = phi_arr[0].strip()
     n = phi_arr[1].strip()
@@ -52,16 +57,123 @@ def query():
     if (V == 'NONE'):
         #Assume '*' is transposed to every attribute in the table in the arguments of phi already
         temp_row = []
+        allAggs_flag = True
+        for proj in SELECT_ARR:
+            if not 'sum' in proj and not 'count' in proj and not 'avg' in proj and not 'min' in proj and not 'max' in proj:
+                allAggs_flag = False
+                break
         
-        # loop through rows in the database
-        for row in cur:
-            temp_row = []
-            for attr in SELECT_ARR:
-                temp_row.append(row[attr])
+        if allAggs_flag:
+            for key in SELECT_ARR:
+                mf_struct[key] = {}
+
+            F_VECT_COMPONENT_ARR = F_VECT.split(',')
+            for key in mf_struct.keys():
+                # agg = 'count_2_quant'
+                [agg_func, agg_table, agg_attr] = key.split('_')
+                if agg_func == 'count':
+                    # e.g. key = 'joe_fruit', agg = 'count_2_quant'
+                    mf_struct[key] = 0
+                elif agg_func == 'sum':
+                    # e.g. key = 'joe_fruit', agg = 'count_2_quant'
+                    mf_struct[key] = 0
+                elif agg_func == 'min':
+                    # e.g. key = 'joe_fruit', agg = 'count_2_quant'
+                    # Highest 
+                    mf_struct[key] = None
+                elif agg_func == 'max':
+                    # e.g. key = 'joe_fruit', agg = 'count_2_quant'
+                    mf_struct[key] = None
+                elif agg_func == 'avg':
+                    # e.g. key = 'joe_fruit', agg = 'count_2_quant'
+                    # avg saved as {sum, count}
+                    # when completed with full loop to add aggregates: set mf_struct[key][agg] = mf_struct[key][agg]['average'] for all aggregates which agg_func == 'avg'
+                    mf_struct[key] = {'sum': 0, 'count': 0}
+                else:
+                    raise Exception(f"Unknown aggregate function when initializing mf_struct aggregate values: {agg_func}")
+            
+            for row in cur:
+                for key in mf_struct.keys():
+                    [agg_func, agg_table, agg_attr] = key.split('_')
+                    if agg_func == 'sum':
+                        mf_struct[key] = mf_struct[key] + int(row[agg_attr])
+                    elif agg_func == 'count':
+                        mf_struct[key] = mf_struct[key] + 1
+                    elif agg_func == 'avg':
+                        mf_struct[key]['count'] =  mf_struct[key]['count'] + 1
+                        mf_struct[key]['sum'] = mf_struct[key]['sum'] + int(row[agg_attr])
+                    elif agg_func == 'max':
+                        # print('Im in max')
+                        if typecast_dict[agg_attr] == 'string':
+                            # print('type = string')
+                            if mf_struct[key] == None:
+                                # print('mf struct row attr = None')
+                                mf_struct[key] = str(row[agg_attr])
+                            elif str(row[agg_attr]) > mf_struct[key]:
+                                # print('mf struct row attr exists')
+                                mf_struct[key] = str(row[agg_attr])
+                        elif typecast_dict[agg_attr] == 'int':
+                            # print('type = int')
+                            if mf_struct[key] == None:
+                                # print('mf struct row attr = None')
+                                mf_struct[key] = int(row[agg_attr])
+                            elif int(row[agg_attr]) > mf_struct[key]:
+                                # print('mf struct row attr exists')
+                                mf_struct[key] = int(row[agg_attr])
+                        elif typecast_dict[agg_attr] == 'date':
+                            # print('type = date')
+                            if mf_struct[key] == None:
+                                mf_struct[key] = row[agg_attr]
+                            elif row[agg_attr] > mf_struct[key]:
+                                mf_struct[key] = row[agg_attr]       
+                    elif agg_func == 'min':
+                        # print('Im in max')
+                        if typecast_dict[agg_attr] == 'string':
+                            # print('type = string')
+                            if mf_struct[key] == None:
+                                # print('mf struct row attr = None')
+                                mf_struct[key] = str(row[agg_attr])
+                            elif str(row[agg_attr]) < mf_struct[key]:
+                                # print('mf struct row attr exists')
+                                mf_struct[key] = str(row[agg_attr])
+                        elif typecast_dict[agg_attr] == 'int':
+                            # print('type = int')
+                            if mf_struct[key] == None:
+                                # print('mf struct row attr = None')
+                                mf_struct[key] = int(row[agg_attr])
+                            elif int(row[agg_attr]) < mf_struct[key]:
+                                # print('mf struct row attr exists')
+                                mf_struct[key] = int(row[agg_attr])
+                        elif typecast_dict[agg_attr] == 'date':
+                            # print('type = date')
+                            if mf_struct[key] == None:
+                                mf_struct[key] = row[agg_attr]
+                            elif row[agg_attr] < mf_struct[key]:
+                                mf_struct[key] = row[agg_attr]
+
+            for key, value in mf_struct.items():
+                [agg_func, agg_table, agg_attr] = key.split('_') 
+                if agg_func == 'avg':
+                    if int(value['count']) != 0:
+                        mf_struct[key] = (int(value['sum'])/int(value['count']))
+                    else:
+                        mf_struct[key] = 0
+                temp_row.append(mf_struct[key])
             _global.append(temp_row)
-        print("length of global:", len(_global))
-        return tabulate.tabulate(_global,
-                        headers=SELECT_ARR, tablefmt="psql")
+            print("length of global:", len(_global))
+            return tabulate.tabulate(_global,
+                            headers=SELECT_ARR, tablefmt="psql")
+        else:
+            # No aggregates
+            # loop through rows in the database
+            for row in cur:
+                temp_row = []
+                for attr in SELECT_ARR:
+                    temp_row.append(row[attr])
+                _global.append(temp_row)
+            print("length of global:", len(_global))
+            return tabulate.tabulate(_global,
+                            headers=SELECT_ARR, tablefmt="psql")
     else:
 
         PRED_ARR = PRED_LIST.split(';')
@@ -188,12 +300,24 @@ def query():
                     fits_table_flag = True
                     [row_agg_func, row_agg_table, row_agg_attr] = row_aggregate.split('_')
 
+                    if row_agg_table == '0':
+                        conditions_array = []
+                    else: 
+                        conditions_array = pred_dict[row_agg_table]
+                    
                     #Returns a list of all the conditions
                     # example is quant_>_100 (attr_symbol_value)
-                    conditions_array = pred_dict[row_agg_table]
                     for row_condition in conditions_array:
                         [cond_attr, symbol, value] = row_condition.split('_')
                         value = value.replace("'", "")
+                        if typecast_dict[cond_attr] == 'int':
+                            value = int(value)
+                        elif typecast_dict[cond_attr] == 'string':
+                            value = str(value)
+                        elif typecast_dict[cond_attr] == 'date':
+                            value = datetime.strptime(value, "%Y-%m-%d")
+                            value = value.date()  
+
                         if symbol == '>':
                             if not row[cond_attr] > value:
                                 fits_table_flag = False
@@ -378,4 +502,5 @@ def main():
     
 if "__main__" == __name__:
     main()
+        
         

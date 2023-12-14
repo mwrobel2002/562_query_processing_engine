@@ -1,0 +1,6 @@
+cust,prod,avg_1_quant,avg_2_quant,
+1
+cust,prod
+avg_1_quant,avg_2_quant
+1.date>='2018-01-01';2.date<'2018-01-01'
+avg_1_quant>500;avg_2_quant>500
