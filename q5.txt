@@ -1,0 +1,12 @@
+cust,prod,month,avg_0_quant,min_0_date,max_0_date
+0
+cust,prod,month
+avg_0_quant,min_0_date,max_0_date
+NONE
+NONE
+
+'''
+
+Here we are finding the total amount of items each customer purchased
+
+'''
