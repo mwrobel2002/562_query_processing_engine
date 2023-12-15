@@ -1,15 +1,14 @@
-cust,prod,min_1_date,sum_1_quant,count_2_quant
-2
+cust,prod,sum_1_quant,sum_2_quant,sum_3_quant
+3
 cust,prod
-min_1_date,sum_1_quant,count_2_quant
-1.state='NY';2.state='NJ';
-min_1_date<2018-01-01;count_2_quant>50
+sum_1_quant,sum_2_quant,sum_3_quant
+1.state='NY';2.state='NJ';3.state='CT'
+NONE
 
 
 '''
 
-For each customer and product combination we are finding the first sale granted
-it is before the start of 2018, the total number of that product sold in NY, and 
-the number of sales in NJ where the number of that product sold is greater than 50.
+Here we are getting the total number of products sold in NY, NJ, and CT for each customer and product 
+combination
 
 '''

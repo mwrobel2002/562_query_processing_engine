@@ -1,14 +1,12 @@
-cust,prod,sum_1_quant,sum_2_quant,sum_3_quant
-3
-cust,prod
-count_1_quant,sum_2_quant,max_3_quant,avg_2_quant,min_1_date
-1.state='NY';2.state='NJ';3.state='CT'
+cust,prod,month,avg_0_quant,min_0_date,max_0_date
+0
+cust,prod,month
+avg_0_quant,min_0_date,max_0_date
 NONE
-
+NONE
 
 '''
 
-Here we are getting the total number of products sold in NY, NJ, and CT for each customer and product 
-combination
+Here we are finding the total amount of items each customer purchased
 
 '''

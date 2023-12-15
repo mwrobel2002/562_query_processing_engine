@@ -64,24 +64,9 @@ join t2 on t1.month = t2.month
 join t3 on t1.month = t3.month;
 
 
+/*Query 5*/
+select cust, prod, month, avg(quant), min(date), max(date)
+from sales
+group by cust, prod, month;
+
 /*Current Query*/
-With t1 as (
-	select cust, prod, sum(quant) as sum_1_quant
-	from sales
-	where state = 'NY'
-	group by cust, prod
-), t2 as (
-	select cust, prod, sum(quant) as sum_2_quant
-	from sales
-	where state = 'NJ'
-	group by cust, prod
-), t3 as (
-	select cust, prod, sum(quant) as sum_3_quant
-	from sales
-	where state = 'CT'
-	group by cust, prod
-)
-select t1.cust, t1.prod, t1.sum_1_quant, t2.sum_2_quant, t3.sum_3_quant
-from t1
-join t2 on t1.cust = t2.cust and t1.prod = t2.prod
-join t3 on t1.cust = t3.cust and t1.prod = t3.prod;

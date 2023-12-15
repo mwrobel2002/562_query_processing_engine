@@ -1,12 +1,15 @@
-cust,prod,month,avg_0_quant,min_0_date,max_0_date
-0
-cust,prod,month
-avg_0_quant,min_0_date,max_0_date
-NONE
-NONE
+cust,prod,min_1_date,sum_1_quant,count_2_quant
+2
+cust,prod
+min_1_date,sum_1_quant,count_2_quant
+1.state='NY';2.state='NJ';
+min_1_date<2018-01-01;count_2_quant>50
+
 
 '''
 
-Here we are finding the total amount of items each customer purchased
+For each customer and product combination we are finding the first sale granted
+it is before the start of 2018, the total number of that product sold in NY, and 
+the number of sales in NJ where the number of that product sold is greater than 50.
 
 '''
