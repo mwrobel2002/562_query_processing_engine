@@ -1,6 +1,6 @@
-cust,prod,sum_0_quant,avg_0_quant,min_0_date,max_0_month
-0
+cust,prod,sum_1_quant,sum_2_quant
+2
 cust,prod
-sum_0_quant,avg_0_quant,min_0_date,max_0_month
-NONE
+sum_1_quant,sum_2_quant
+1.state='NY';2.state='NJ';1.date='2016-03-14';
 NONE

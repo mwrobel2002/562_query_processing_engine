@@ -170,7 +170,7 @@ def query():
     
     _global = []
     
-    f = open("q5.txt", "r")
+    f = open("testQuery.txt", "r")
     phi_arr = f.readlines()
     S = phi_arr[0].strip()
     n = phi_arr[1].strip()
@@ -362,6 +362,15 @@ def query():
                     for row_condition in conditions_array:
                         [cond_attr, symbol, value] = row_condition.split('_')
                         value = value.replace("'", "")
+                        # Typecasting for value in row
+                        valueType = typecast_dict[cond_attr]
+                        if valueType == 'string':
+                            value = str(value)
+                        elif valueType == 'int':
+                            value = int(value)
+                        elif valueType == 'date':
+                            value = datetime.strptime(value, "%Y-%m-%d")
+                            value = value.date()
                         if symbol == '>':
                             if not row[cond_attr] > value:
                                 fits_table_flag = False
